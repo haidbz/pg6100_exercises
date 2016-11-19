@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by Håvard on 04.11.2016.
@@ -16,10 +17,11 @@ public class Quiz {
     private Long quizId;
     
     @Column(unique = true)
+    @Size(max = 255)
     @NotBlank
     private String question;
     
-    @NotBlank
+    @Size(min = 4, max = 4)
     private String[] answers;
     
     @Min(value = 0)

@@ -2,10 +2,7 @@ package entities;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,16 +18,22 @@ public class Category {
     @ManyToOne
     private Category parentCategory;
     
-    @OneToMany
-    private Category childCategories;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Category> childCategories;
     
     @OneToMany
-    private List<Quiz> quizzes;
+    private List<Quiz> quizes;
     
-    public List<Quiz> getQuizzes() {
-        if (quizzes == null)
-            quizzes = new ArrayList<>();
-        return quizzes;
+    public List<Category> getChildCategories() {
+        if (childCategories == null)
+            childCategories = new ArrayList<>();
+        return childCategories;
+    }
+    
+    public List<Quiz> getQuizes() {
+        if (quizes == null)
+            quizes = new ArrayList<>();
+        return quizes;
     }
     
     public String getName() {
@@ -47,13 +50,5 @@ public class Category {
     
     public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
-    }
-    
-    public Category getChildCategories() {
-        return childCategories;
-    }
-    
-    public void setChildCategories(Category childCategories) {
-        this.childCategories = childCategories;
     }
 }
