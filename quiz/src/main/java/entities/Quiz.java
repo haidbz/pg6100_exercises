@@ -11,9 +11,14 @@ import javax.validation.constraints.Size;
 /**
  * Created by Håvard on 04.11.2016.
  */
+@NamedQueries({
+        @NamedQuery(name = Quiz.GET_ALL, query = "SELECT q FROM Quiz Q")
+})
 @Entity
 public class Quiz {
-    @Id @GeneratedValue
+    public static final String GET_ALL = "GET_ALL";
+    
+    @Id @GeneratedValue(strategy = GenerationType.TABLE)
     private Long quizId;
     
     @Column(unique = true)

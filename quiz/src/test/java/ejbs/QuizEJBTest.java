@@ -14,6 +14,7 @@ import util.DeleterEJB;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,19 +41,18 @@ public class QuizEJBTest {
     private DeleterEJB deleterEJB;
     
     @Before
-    @After
-    public void emptyDatabase() throws Exception {
-        deleterEJB.deleteEntities(Quiz.class);
-    }
-    
-    @Before
     public void setUp() throws Exception {
         deleterEJB.deleteEntities(Quiz.class);
         createSubSubCategory();
     }
     
-    private void createQuiz(String question){
-        quizEJB.createQuiz(question, new String[]{"alpha", "beta", "gamma", "epsilon"}, 0, "Sub");
+    @After
+    public void tearDown() throws Exception {
+        deleterEJB.deleteEntities(Quiz.class);
+    }
+    
+    private long createQuiz(String question){
+        return quizEJB.createQuiz(question, new String[]{"alpha", "beta", "gamma", "epsilon"}, 0, "Sub");
     }
     
     private void createSubSubCategory(){
@@ -78,8 +78,8 @@ public class QuizEJBTest {
             quizEJB.createQuiz("    ", new String[]{"", "", "", ""}, 0, "Sub");
             fail();
         }
-        catch (EJBException e){
-            e.printStackTrace();
+        catch (EJBException ignored){
+            
         }
     
         try {
@@ -89,29 +89,64 @@ public class QuizEJBTest {
             quizEJB.createQuiz(builder.toString(), new String[]{"", "", "", ""}, 0, "Sub");
             fail();
         }
-        catch (EJBException e){
-            e.printStackTrace();
-        }
+        catch (EJBException ignored){}
     
         try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Sub");
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", ""}, 0, "Sub");
             fail();
         }
-        catch (EJBException e){
-            e.printStackTrace();
+        catch (EJBException ignored){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", "", ""}, 0, "Sub");
+            fail();
         }
+        catch (EJBException ignored){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, -1, "Sub");
+            fail();
+        }
+        catch (EJBException e){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 5, "Sub");
+            fail();
+        }
+        catch (EJBException e){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Switch");
+            fail();
+        }
+        catch (EJBException e){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Root");
+            fail();
+        }
+        catch (EJBException e){}
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Wrong");
+            fail();
+        }
+        catch (EJBException e){}
     }
     
     @Test
     public void testGetQuiz() throws Exception {
-        String question = "An arbitrary question?";
-        createQuiz(question);
         List<Quiz> list = quizEJB.getAllQuizes(5);
+        assertEquals(0, list.size());
+        
+        String question = "An arbitrary question?";
+        long id = createQuiz(question);
+    
+        assertNotNull(quizEJB.getQuiz(id));
+        assertEquals(question, quizEJB.getQuiz(id).getQuestion());
+        
+        list = quizEJB.getAllQuizes(5);
         assertNotNull(list);
         assertEquals(question, list.get(0).getQuestion());
-/*
-        assertNotNull(quizEJB.getQuiz(1L));
-        assertEquals(question, quizEJB.getQuiz(1L).getQuestion());
-*/
     }
 }

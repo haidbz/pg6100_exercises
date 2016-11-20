@@ -30,7 +30,7 @@ public class QuizEJB {
     
     public QuizEJB() {}
     
-    public void createQuiz(@NotBlank @Size(max = 255) String question, @Size(min = 4, max = 4) String[] answers,
+    public long createQuiz(@NotBlank @Size(max = 255) String question, @Size(min = 4, max = 4) String[] answers,
                            @Min(value = 0) @Max(value = 3) int correctAnswer, String category){
         Quiz quiz = new Quiz();
         quiz.setQuestion(question);
@@ -39,15 +39,22 @@ public class QuizEJB {
         quiz.setSubSubCategory(categoryEJB.getCategory(category));
         
         entityManager.persist(quiz);
+        
+        return quiz.getQuizId();
     }
     
-    public Quiz getQuiz(long l) {
-        return entityManager.find(Quiz.class, l);
+    public Quiz getQuiz(long id) {
+        return entityManager.find(Quiz.class, id);
     }
     
     public List<Quiz> getAllQuizes(int maxResults){
-        Query query = entityManager.createQuery("select q from Quiz q order by q.id");
+        Query query = entityManager.createNamedQuery(Quiz.GET_ALL);
         query.setMaxResults(maxResults);
         return query.getResultList();
+    }
+    
+    public void deleteQuiz(long id){
+        Quiz quiz = getQuiz(id);
+        entityManager.remove(quiz);
     }
 }
