@@ -22,9 +22,11 @@
                 You can read more at:
                 http://arquillian.org/guides/getting_started_rinse_and_repeat/
               -->
-            <!--<property name="javaVmArguments">-->
-                <!-- -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y-->
-            <!--</property>-->
+<!--
+            <property name="javaVmArguments">
+                 -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y
+            </property>
+-->
         </configuration>
     </container>
 

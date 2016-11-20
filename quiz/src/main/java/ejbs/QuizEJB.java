@@ -8,10 +8,13 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Håvard on 19.11.2016.
@@ -36,5 +39,15 @@ public class QuizEJB {
         quiz.setSubSubCategory(categoryEJB.getCategory(category));
         
         entityManager.persist(quiz);
+    }
+    
+    public Quiz getQuiz(long l) {
+        return entityManager.find(Quiz.class, l);
+    }
+    
+    public List<Quiz> getAllQuizes(int maxResults){
+        Query query = entityManager.createQuery("select q from Quiz q order by q.id");
+        query.setMaxResults(maxResults);
+        return query.getResultList();
     }
 }

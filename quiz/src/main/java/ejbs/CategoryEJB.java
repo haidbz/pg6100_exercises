@@ -1,6 +1,7 @@
 package ejbs;
 
 import entities.Category;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,11 +18,11 @@ public class CategoryEJB {
     
     public CategoryEJB() {}
     
-    public boolean createCategory(String name){
+    public boolean createCategory(@NotBlank String name){
         return createCategory(name, null);
     }
     
-    public boolean createCategory(String name, String parent){
+    public boolean createCategory(@NotBlank String name, String parent){
         if (!categoryIsNull(name) || (parent != null && categoryIsNull(parent)))
             return false;
     

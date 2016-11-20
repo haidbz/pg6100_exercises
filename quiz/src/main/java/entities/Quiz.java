@@ -33,6 +33,10 @@ public class Quiz {
     @NotNull
     private Category subSubCategory;
     
+    public Long getQuizId() {
+        return quizId;
+    }
+    
     public String getQuestion() {
         return question;
     }

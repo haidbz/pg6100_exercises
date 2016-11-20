@@ -2,6 +2,7 @@ package ejbs;
 
 import entities.Category;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.impl.client.deployment.ValidationException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import util.DeleterEJB;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 
 import static org.junit.Assert.*;
 
@@ -76,5 +78,15 @@ public class CategoryEJBTest {
     
         assertEquals(1, categoryEJB.getCategory(monthyPython).getChildCategories().size());
         assertEquals(holyGrail, categoryEJB.getCategory(monthyPython).getChildCategories().get(0).getName());
+    }
+    
+    @Test
+    public void testBadInput() throws Exception {
+        try {
+            categoryEJB.createCategory("    ");
+            fail();
+        }
+        catch (EJBException e){e.printStackTrace();}
+        assertFalse(categoryEJB.createCategory("Bad_sub", "Null"));
     }
 }

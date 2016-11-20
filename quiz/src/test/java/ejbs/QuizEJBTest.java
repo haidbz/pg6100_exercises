@@ -12,6 +12,9 @@ import org.junit.runner.RunWith;
 import util.DeleterEJB;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -42,8 +45,13 @@ public class QuizEJBTest {
         deleterEJB.deleteEntities(Quiz.class);
     }
     
-    private void createQuiz(String question){
+    @Before
+    public void setUp() throws Exception {
+        deleterEJB.deleteEntities(Quiz.class);
         createSubSubCategory();
+    }
+    
+    private void createQuiz(String question){
         quizEJB.createQuiz(question, new String[]{"alpha", "beta", "gamma", "epsilon"}, 0, "Sub");
     }
     
@@ -54,13 +62,56 @@ public class QuizEJBTest {
     }
     
     @Test
-    public void testCanCreateQuiz() throws Exception {
+    public void testCreateQuiz() throws Exception {
         try {
-            createQuiz("What is the air airspeed velocity of an unladen swallow?");
+            createQuiz("What is the airspeed velocity of an unladen swallow?");
         }
         catch (Exception e){
+            e.printStackTrace();
             fail();
         }
     }
     
+    @Test
+    public void testBadInput() throws Exception {
+        try {
+            quizEJB.createQuiz("    ", new String[]{"", "", "", ""}, 0, "Sub");
+            fail();
+        }
+        catch (EJBException e){
+            e.printStackTrace();
+        }
+    
+        try {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < 30; i++)
+                builder.append("Arbitrary");
+            quizEJB.createQuiz(builder.toString(), new String[]{"", "", "", ""}, 0, "Sub");
+            fail();
+        }
+        catch (EJBException e){
+            e.printStackTrace();
+        }
+    
+        try {
+            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Sub");
+            fail();
+        }
+        catch (EJBException e){
+            e.printStackTrace();
+        }
+    }
+    
+    @Test
+    public void testGetQuiz() throws Exception {
+        String question = "An arbitrary question?";
+        createQuiz(question);
+        List<Quiz> list = quizEJB.getAllQuizes(5);
+        assertNotNull(list);
+        assertEquals(question, list.get(0).getQuestion());
+/*
+        assertNotNull(quizEJB.getQuiz(1L));
+        assertEquals(question, quizEJB.getQuiz(1L).getQuestion());
+*/
+    }
 }
