@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Håvard on 19.11.2016.
@@ -46,5 +49,28 @@ public class CategoryEJB {
     
     public Category getCategory(String category) {
         return entityManager.find(Category.class, category);
+    }
+    
+    public List<Category> getAllCategories(){
+        return getAllCategories(50);
+    }
+    
+    public List<Category> getAllCategories(int maxResults){
+        Query query = entityManager.createNamedQuery(Category.GET_ALL);
+        query.setMaxResults(maxResults);
+        return query.getResultList();
+    }
+    
+    public void deleteCategory(String name, boolean recursive){
+        Category category = getCategory(name);
+        
+        if (recursive){
+//            List<Category> children = 
+            Iterator<Category> categoryIterator = category.getChildCategories().iterator();
+            while (categoryIterator.hasNext())
+                deleteCategory(categoryIterator.next().getName(), true);
+        }
+        
+        entityManager.remove(category);
     }
 }

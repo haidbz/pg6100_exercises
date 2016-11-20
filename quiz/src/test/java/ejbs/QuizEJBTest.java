@@ -14,7 +14,6 @@ import util.DeleterEJB;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -136,7 +135,7 @@ public class QuizEJBTest {
     
     @Test
     public void testGetQuiz() throws Exception {
-        List<Quiz> list = quizEJB.getAllQuizes(5);
+        List<Quiz> list = quizEJB.getAllQuizzes();
         assertEquals(0, list.size());
         
         String question = "An arbitrary question?";
@@ -145,8 +144,30 @@ public class QuizEJBTest {
         assertNotNull(quizEJB.getQuiz(id));
         assertEquals(question, quizEJB.getQuiz(id).getQuestion());
         
-        list = quizEJB.getAllQuizes(5);
+        list = quizEJB.getAllQuizzes();
         assertNotNull(list);
         assertEquals(question, list.get(0).getQuestion());
+    }
+    
+    @Test
+    public void testDeleteQuiz() throws Exception {
+        List<Quiz> list = quizEJB.getAllQuizzes();
+        assertEquals(0, list.size());
+        
+        String saveString = "save";
+        String deleteString = "delete";
+        long saveId = createQuiz(saveString);
+        long deleteId = createQuiz(deleteString);
+        list = quizEJB.getAllQuizzes();
+        
+        assertEquals(saveString, quizEJB.getQuiz(saveId).getQuestion());
+        assertEquals(deleteString, quizEJB.getQuiz(deleteId).getQuestion());
+        assertEquals(2, list.size());
+        
+        quizEJB.deleteQuiz(deleteId);
+        list = quizEJB.getAllQuizzes();
+        assertNull(quizEJB.getQuiz(deleteId));
+        assertEquals(1, list.size());
+        assertEquals(saveString, list.get(0).getQuestion());
     }
 }

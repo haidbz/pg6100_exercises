@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 })
 @Entity
 public class Quiz {
-    public static final String GET_ALL = "GET_ALL";
+    public static final String GET_ALL = "GET_ALL_QUIZZES";
     
     @Id @GeneratedValue(strategy = GenerationType.TABLE)
     private Long quizId;

@@ -9,8 +9,13 @@ import java.util.List;
 /**
  * Created by Håvard on 04.11.2016.
  */
+@NamedQueries({
+        @NamedQuery(name = Category.GET_ALL, query = "SELECT c FROM Category c")
+})
 @Entity
 public class Category {
+    public final static String GET_ALL = "GET_ALL_CATEGORIES";
+    
     @Id
     @NotBlank
     private String name;

@@ -2,10 +2,8 @@ package ejbs;
 
 import entities.Category;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.impl.client.deployment.ValidationException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +13,11 @@ import util.DeleterEJB;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -39,8 +42,12 @@ public class CategoryEJBTest {
     DeleterEJB deleterEJB;
     
     @Before
+    public void setUp() throws Exception {
+        deleterEJB.deleteEntities(Category.class);
+    }
+    
     @After
-    public void emptyDatabase() throws Exception {
+    public void tearDown() throws Exception {
         deleterEJB.deleteEntities(Category.class);
     }
     
@@ -89,4 +96,52 @@ public class CategoryEJBTest {
         catch (EJBException e){e.printStackTrace();}
         assertFalse(categoryEJB.createCategory("Bad_sub", "Null"));
     }
+    
+    @Test
+    public void testDeleteCategory() throws Exception {
+        String root = "root";
+        categoryEJB.createCategory(root);
+        
+        StringBuilder subBuilder = new StringBuilder();
+    
+        Set<String> subs = generateDummySubCategories(root, 5, 3, subBuilder);
+        assertTrue(subs.contains("sub_0"));
+        assertTrue(subs.contains("sub_4"));
+        assertTrue(subs.contains("sub_0_4"));
+        assertTrue(subs.contains("sub_4_0"));
+        assertTrue(subs.contains("sub_0_4_0"));
+        assertTrue(subs.contains("sub_4_0_4"));
+        
+        categoryEJB.deleteCategory(root, true);
+        List<Category> categories = categoryEJB.getAllCategories();
+        
+        subs.forEach(s -> assertFalse(categories.contains(s)));
+    }
+    
+    /**
+     * Generates dummy categories and writes to database.
+     * @param root The name of the root category the generated categories belong to.
+     * @param categoriesPerLevel The number of child categories each category has
+     * @param levels How many times this method is called recursively.
+     * @param builder Required to build the categories' names.
+     * @return A list with the names of every category in the order of sub_1 -> sub_1_1 -> sub_1_2 -> sub_2 -> sub_2_1 -> sub_2_2
+     */
+    private Set<String> generateDummySubCategories(String root, int categoriesPerLevel, int levels, StringBuilder builder) {
+        String sub = "sub";
+        Set<String> set = new HashSet<>();
+        
+        for (int i = 0; i < categoriesPerLevel; i++){
+            builder.append("_").append(i);
+            set.add(builder.toString());
+            categoryEJB.createCategory(builder.toString(), root);
+            
+            if (levels < 0)
+                set.addAll(generateDummySubCategories(builder.toString(), categoriesPerLevel, levels - 1, builder));
+            
+            builder = new StringBuilder(sub);
+        }
+            
+        return set;
+    }
 }
+

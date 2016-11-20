@@ -47,7 +47,11 @@ public class QuizEJB {
         return entityManager.find(Quiz.class, id);
     }
     
-    public List<Quiz> getAllQuizes(int maxResults){
+    public List<Quiz> getAllQuizzes(){
+        return getAllQuizzes(50);
+    }
+    
+    public List<Quiz> getAllQuizzes(int maxResults){
         Query query = entityManager.createNamedQuery(Quiz.GET_ALL);
         query.setMaxResults(maxResults);
         return query.getResultList();
