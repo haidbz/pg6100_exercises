@@ -61,6 +61,10 @@ public class CategoryEJB {
         return query.getResultList();
     }
     
+    public void deleteCategory(String name){
+        deleteCategory(name, true);
+    }
+    
     public void deleteCategory(String name, boolean recursive){
         Category category = getCategory(name);
         
