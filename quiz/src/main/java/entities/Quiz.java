@@ -1,6 +1,7 @@
 package entities;
 
 import org.hibernate.validator.constraints.NotBlank;
+import validators.ParentCategories;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -34,8 +35,8 @@ public class Quiz {
     private int correctAnswer;
     
     @ManyToOne
-    @ParentCategories(parents = 2)
     @NotNull
+    @ParentCategories(parents = 2)
     private Category subSubCategory;
     
     public Long getQuizId() {

@@ -61,16 +61,30 @@ public class CategoryEJB {
         return query.getResultList();
     }
     
-    public void deleteCategory(String name, boolean recursive){
+    public void deleteRecursivelyCategory(String name) {
+        deleteCategory(name, true);
+    }
+    
+    public void deleteSingleCategory(String name){
+        deleteCategory(name, false);
+    }
+    
+    private void deleteCategory(String name, boolean recursive) {
         Category category = getCategory(name);
-        
-        if (recursive){
-//            List<Category> children = 
-            Iterator<Category> categoryIterator = category.getChildCategories().iterator();
-            while (categoryIterator.hasNext())
-                deleteCategory(categoryIterator.next().getName(), true);
-        }
-        
+        if (recursive)
+            category.getChildCategories().forEach(child -> deleteRecursivelyCategory(child.getName()));
+        else 
+            category.getChildCategories().forEach(child -> child.setParentCategory(null));
         entityManager.remove(category);
+    }
+    
+    public void deleteCategoryMoveChildren(String name, String newParent){
+        getCategory(name).getChildCategories().forEach(child -> {
+            getCategory(newParent).getChildCategories().add(child);
+            child.setParentCategory(getCategory(newParent));
+        });
+        getCategory(name).setChildCategories(null);
+        
+        deleteSingleCategory(name);
     }
 }
