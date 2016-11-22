@@ -14,7 +14,6 @@ import util.DeleterEJB;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -96,24 +95,56 @@ public class CategoryEJBTest {
     }
     
     @Test
-    public void testDeleteCategory() throws Exception {
+    public void testDeleteSingleCategory() throws Exception {
         String root = "root";
         categoryEJB.createCategory(root);
     
-        List<Category> subs = generateDummySubCategories(root, 3, 3);
-        List<String> exampleSubNames = Arrays.asList("sub_0", "sub_2", "sub_0_2", "sub_2_0", "sub_0_2_0", "sub_2_0_2");
-        exampleSubNames.forEach(name -> assertNotNull(categoryEJB.getCategory(name)));
-
+        List<String> exampleSubNames = checkGeneratedCategories(root);
+    
         assertEquals(exampleSubNames.get(0), categoryEJB.getCategory(exampleSubNames.get(0)).getName());
-        categoryEJB.deleteCategoryMoveChildren(exampleSubNames.get(0), root);
+        categoryEJB.deleteSingleCategory(exampleSubNames.get(0));
         assertNull(categoryEJB.getCategory(exampleSubNames.get(0)));
         assertNotNull(categoryEJB.getCategory(exampleSubNames.get(2)));
         assertNotNull(categoryEJB.getCategory(root));
-        
-        categoryEJB.deleteCategory(root);
+    }
+    
+    @Test
+    public void testDeleteRecursively() throws Exception {
+        String root = "root";
+        categoryEJB.createCategory(root);
+        checkGeneratedCategories(root);
+    
+        List<Category> subsOfRoot = categoryEJB.getCategory(root).getChildCategories();
+        categoryEJB.deleteRecursivelyCategory(root);
         List<Category> allCategories = categoryEJB.getAllCategories();
-//        allCategories = categoryEJB.getAllCategories();
-        assertEquals(0, allCategories.size());
+        subsOfRoot.forEach(sub -> assertFalse(allCategories.contains(sub)));
+    }
+    
+    @Test
+    public void testDeleteAndMoveChildren() throws Exception {
+        String root = "root";
+        categoryEJB.createCategory(root);
+    
+        List<String> exampleSubNames = checkGeneratedCategories(root);
+        
+        Category deleted = categoryEJB.getCategory(exampleSubNames.get(0));
+        Category newParent = categoryEJB.getCategory(exampleSubNames.get(1));
+        List<Category> childCategories = deleted.getChildCategories();
+        
+        categoryEJB.deleteCategoryMoveChildren(deleted.getName(), newParent.getName());
+    
+        deleted = categoryEJB.getCategory(exampleSubNames.get(0));
+        Category finalNewParent = categoryEJB.getCategory(exampleSubNames.get(1));
+        
+        assertNull(deleted);
+        assertTrue(finalNewParent.getChildCategories().containsAll(childCategories));
+    }
+    
+    private List<String> checkGeneratedCategories(String root) {
+        generateDummySubCategories(root, 3, 3);
+        List<String> exampleSubNames = Arrays.asList("sub_0", "sub_2", "sub_0_2", "sub_2_0", "sub_0_2_0", "sub_2_0_2");
+        exampleSubNames.forEach(name -> assertNotNull(categoryEJB.getCategory(name)));
+        return exampleSubNames;
     }
     
     /**
@@ -123,26 +154,22 @@ public class CategoryEJBTest {
      * @param levels How many times this method is called recursively.
      * @return A list with the names of every category in the order of sub_1 -> sub_1_1 -> sub_1_2 -> sub_2 -> sub_2_1 -> sub_2_2
      */
-    private List<Category> generateDummySubCategories(String root, int categoriesPerLevel, int levels) {
+    private void generateDummySubCategories(String root, int categoriesPerLevel, int levels) {
         String sub = "sub";
-        List<Category> list = new ArrayList<>();
         if (root.contains(sub))
             sub = root;
         
         for (int i = 0; i < categoriesPerLevel; i++)
-            createDummySub(root, categoriesPerLevel, levels, sub, list, i);
-            
-        return list;
+            createDummySub(root, categoriesPerLevel, levels, sub, i);
     }
     
-    private void createDummySub(String root, int categoriesPerLevel, int levels, String sub, List<Category> list, int i) {
+    private void createDummySub(String root, int categoriesPerLevel, int levels, String sub, int i) {
         StringBuilder builder = new StringBuilder(sub);
         builder.append("_").append(i);
         categoryEJB.createCategory(builder.toString(), root);
-        list.add(categoryEJB.getCategory(builder.toString()));
         
         if (levels > 0) 
-            list.addAll(generateDummySubCategories(builder.toString(), categoriesPerLevel, levels - 1));
+            generateDummySubCategories(builder.toString(), categoriesPerLevel, levels - 1);
     }
 }
 

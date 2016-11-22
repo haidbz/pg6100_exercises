@@ -27,7 +27,17 @@ public class Category {
     private List<Category> childCategories;
     
     @OneToMany
-    private List<Quiz> quizes;
+    private List<Quiz> quizzes;
+    
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Category)
+            return getName().equals(((Category) o).getName());
+        else if (o instanceof String)
+            return getName().equals(o);
+        else 
+            return false;
+    }
     
     public List<Category> getChildCategories() {
         if (childCategories == null)
@@ -35,14 +45,14 @@ public class Category {
         return childCategories;
     }
     
-    public void setChildCategories(List<Category> childCategories) {
-        this.childCategories = childCategories;
+    public List<Quiz> getQuizzes() {
+        if (quizzes == null)
+            quizzes = new ArrayList<>();
+        return quizzes;
     }
     
-    public List<Quiz> getQuizes() {
-        if (quizes == null)
-            quizes = new ArrayList<>();
-        return quizes;
+    public void setChildCategories(List<Category> childCategories) {
+        this.childCategories = childCategories;
     }
     
     public String getName() {

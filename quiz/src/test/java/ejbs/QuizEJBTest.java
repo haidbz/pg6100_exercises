@@ -77,9 +77,7 @@ public class QuizEJBTest {
             quizEJB.createQuiz("    ", new String[]{"", "", "", ""}, 0, "Sub");
             fail();
         }
-        catch (EJBException ignored){
-            
-        }
+        catch (EJBException ignored){}
     
         try {
             StringBuilder builder = new StringBuilder();

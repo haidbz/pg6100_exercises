@@ -61,21 +61,30 @@ public class CategoryEJB {
         return query.getResultList();
     }
     
-    public void deleteCategory(String name){
+    public void deleteRecursivelyCategory(String name) {
+        deleteCategory(name, true);
+    }
+    
+    public void deleteSingleCategory(String name){
+        deleteCategory(name, false);
+    }
+    
+    private void deleteCategory(String name, boolean recursive) {
         Category category = getCategory(name);
-        
+        if (recursive)
+            category.getChildCategories().forEach(child -> deleteRecursivelyCategory(child.getName()));
+        else 
+            category.getChildCategories().forEach(child -> child.setParentCategory(null));
         entityManager.remove(category);
     }
     
-    // TODO remove and have deletion of category always delete all sub-categories. Or maybe figure out why it doesnot delete.
     public void deleteCategoryMoveChildren(String name, String newParent){
-        Category deleteCategory = getCategory(name);
-        Category parentCategory = getCategory(newParent);
+        getCategory(name).getChildCategories().forEach(child -> {
+            getCategory(newParent).getChildCategories().add(child);
+            child.setParentCategory(getCategory(newParent));
+        });
+        getCategory(name).setChildCategories(null);
         
-        parentCategory.getChildCategories().addAll(deleteCategory.getChildCategories());
-        deleteCategory.setChildCategories(null);
-        
-//        deleteCategory(name);
-        entityManager.remove(deleteCategory);
+        deleteSingleCategory(name);
     }
 }
