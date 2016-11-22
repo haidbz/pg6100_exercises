@@ -1,4 +1,4 @@
-package validators;
+package entities;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ParentCategories {
+@interface ParentCategories {
     String message() default "Not the expected amount of super categories.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

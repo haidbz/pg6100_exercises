@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
+    <groupId>meistad.pg6100.excercises</groupId>
     <artifactId>quiz</artifactId>
 
     <dependencies>

@@ -1,6 +1,4 @@
-package validators;
-
-import entities.Category;
+package entities;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

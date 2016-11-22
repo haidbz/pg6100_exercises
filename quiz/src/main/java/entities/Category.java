@@ -33,10 +33,8 @@ public class Category {
     public boolean equals(Object o){
         if (o instanceof Category)
             return getName().equals(((Category) o).getName());
-        else if (o instanceof String)
-            return getName().equals(o);
-        else 
-            return false;
+        else
+            return o instanceof String && getName().equals(o);
     }
     
     public List<Category> getChildCategories() {
