@@ -20,10 +20,10 @@ public class Category {
     @NotBlank
     private String name;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Category parentCategory;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parentCategory")
     private List<Category> childCategories;
     
     @OneToMany
@@ -31,8 +31,12 @@ public class Category {
     
     public List<Category> getChildCategories() {
         if (childCategories == null)
-            childCategories = new ArrayList<>();
+            setChildCategories(new ArrayList<>());
         return childCategories;
+    }
+    
+    public void setChildCategories(List<Category> childCategories) {
+        this.childCategories = childCategories;
     }
     
     public List<Quiz> getQuizes() {

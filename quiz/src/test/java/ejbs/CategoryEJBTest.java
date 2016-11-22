@@ -99,20 +99,20 @@ public class CategoryEJBTest {
     public void testDeleteCategory() throws Exception {
         String root = "root";
         categoryEJB.createCategory(root);
-        
-        StringBuilder subBuilder = new StringBuilder();
     
         List<Category> subs = generateDummySubCategories(root, 3, 3);
         List<String> exampleSubNames = Arrays.asList("sub_0", "sub_2", "sub_0_2", "sub_2_0", "sub_0_2_0", "sub_2_0_2");
-        for (String name : exampleSubNames)
-            assertTrue(subs.contains(categoryEJB.getCategory(name)));
+        exampleSubNames.forEach(name -> assertNotNull(categoryEJB.getCategory(name)));
+
+        assertEquals(exampleSubNames.get(0), categoryEJB.getCategory(exampleSubNames.get(0)).getName());
+        categoryEJB.deleteCategoryMoveChildren(exampleSubNames.get(0), root);
+        assertNull(categoryEJB.getCategory(exampleSubNames.get(0)));
+        assertNotNull(categoryEJB.getCategory(exampleSubNames.get(2)));
+        assertNotNull(categoryEJB.getCategory(root));
         
-        categoryEJB.deleteCategory(exampleSubNames.get(0), false);
+        categoryEJB.deleteCategory(root);
         List<Category> allCategories = categoryEJB.getAllCategories();
-        assertFalse(allCategories.contains(categoryEJB.getCategory()));
-        
-        categoryEJB.deleteCategory(root, true);
-        allCategories = categoryEJB.getAllCategories();
+//        allCategories = categoryEJB.getAllCategories();
         assertEquals(0, allCategories.size());
     }
     

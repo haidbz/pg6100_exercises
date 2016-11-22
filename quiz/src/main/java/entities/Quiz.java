@@ -1,6 +1,7 @@
 package entities;
 
 import org.hibernate.validator.constraints.NotBlank;
+import validators.ParentCategories;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
