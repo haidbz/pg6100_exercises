@@ -3,6 +3,7 @@ package ejbs;
 import entities.Quiz;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.spi.ArquillianProxyException;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
@@ -71,66 +72,47 @@ public class QuizEJBTest {
         }
     }
     
-    @Test
-    public void testBadInput() throws Exception {
-        try {
-            quizEJB.createQuiz("    ", new String[]{"", "", "", ""}, 0, "Sub");
-            fail();
-        }
-        catch (EJBException ignored){
-            
-        }
+    @Test(expected = ArquillianProxyException.class)
+    public void testCreateWithBlankQuestion() throws Exception {
+        quizEJB.createQuiz("    ", new String[]{"", "", "", ""}, 0, "Sub");
+    }
     
-        try {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < 30; i++)
-                builder.append("Arbitrary");
-            quizEJB.createQuiz(builder.toString(), new String[]{"", "", "", ""}, 0, "Sub");
-            fail();
-        }
-        catch (EJBException ignored){}
+    @Test(expected = ArquillianProxyException.class)
+    public void testCreateWithLongQuestion() throws Exception {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 30; i++)
+            builder.append("Arbitrary");
+        quizEJB.createQuiz(builder.toString(), new String[]{"", "", "", ""}, 0, "Sub");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", ""}, 0, "Sub");
-            fail();
-        }
-        catch (EJBException ignored){}
+    @Test(expected = ArquillianProxyException.class)
+    public void testCreateWithFewAnswers() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", ""}, 0, "Sub");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", "", ""}, 0, "Sub");
-            fail();
-        }
-        catch (EJBException ignored){}
+    @Test(expected = ArquillianProxyException.class)
+    public void testCreateWithManyAnswers() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", "", ""}, 0, "Sub");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, -1, "Sub");
-            fail();
-        }
-        catch (EJBException e){}
+    @Test(expected = ArquillianProxyException.class)
+    public void testCreateWithCorrectAnswerOutOfBounds() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, -1, "Sub");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 5, "Sub");
-            fail();
-        }
-        catch (EJBException e){}
+    @Test(expected = EJBException.class)
+    public void testCreateWithSubCategory() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Switch");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Switch");
-            fail();
-        }
-        catch (EJBException e){}
+    @Test(expected = EJBException.class)
+    public void testCreateWithRootCategory() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Dom");
+    }
     
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Root");
-            fail();
-        }
-        catch (EJBException e){}
-    
-        try {
-            quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Wrong");
-            fail();
-        }
-        catch (EJBException e){}
+    @Test(expected = EJBException.class)
+    public void testCreateWithNonexistantCategory() throws Exception {
+        quizEJB.createQuiz("Arbitrary", new String[]{"", "", "", ""}, 0, "Wrong");
     }
     
     @Test
