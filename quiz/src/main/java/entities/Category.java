@@ -26,7 +26,7 @@ public class Category {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parentCategory")
     private List<Category> childCategories;
     
-    @OneToMany
+    @OneToMany(mappedBy = "subSubCategory")
     private List<Quiz> quizzes;
     
     @Override

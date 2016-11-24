@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@interface ParentCategories {
+public @interface ParentCategories {
     String message() default "Not the expected amount of super categories.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
