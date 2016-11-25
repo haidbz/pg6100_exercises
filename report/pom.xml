@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>meistad.pg6100.excercises</groupId>
-            <artifactId>restAPI</artifactId>
+            <artifactId>rest_api</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>

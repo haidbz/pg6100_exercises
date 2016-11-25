@@ -11,25 +11,36 @@
     
     <modules>
         <module>quiz</module>
-        <module>restAPI</module>
+        <module>rest_api</module>
         <module>report</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <hibernate.version>5.2.3.Final</hibernate.version>
-        <wildfly.version>10.1.0.Final</wildfly.version>
         <jbossTarget>${basedir}/target/downloaded_Wildfly</jbossTarget>
-        <jbossHome>${jbossTarget}/wildfly-${wildfly.version}</jbossHome>
-        <version.jacoco>0.7.7.201606060606</version.jacoco>
+        <jbossHome>${jbossTarget}/wildfly-${version.wildfly}</jbossHome>
         <fs>${file.separator}</fs>
-        <swagger-version>1.5.10</swagger-version>
-        <jackson-version>2.7.4</jackson-version>
+        <version.hibernate>5.2.3.Final</version.hibernate>
+        <version.wildfly>10.1.0.Final</version.wildfly>
+        <version.jacoco>0.7.7.201606060606</version.jacoco>
+        <version.swagger>1.5.10</version.swagger>
+        <version.jackson>2.7.4</version.jackson>
+        <version.dropwizard>1.0.3</version.dropwizard>
+        <version.wildfly.swarm>2016.11.0</version.wildfly.swarm>
+        <version.hystrix>1.5.8</version.hystrix>
+        <version.rxjava>1.2.2</version.rxjava>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Internal modules used by other modules -->
+            <dependency>
+                <groupId>meistad.pg6100.excercises</groupId>
+                <artifactId>quiz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
             <!-- JEE -->
             <dependency>
                 <groupId>javax</groupId>
@@ -51,6 +62,14 @@
                 <scope>provided</scope>
             </dependency>
     
+            <!-- Wildfly Swarm -->
+            <dependency>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom</artifactId>
+                <version>${version.wildfly.swarm}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
     
             <!-- JPA / Hibernate / Database -->
             <dependency>
@@ -62,13 +81,13 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.version}</version>
+                <version>${version.hibernate}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
+                <version>${version.hibernate}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -77,7 +96,63 @@
                 <version>1.4.192</version>
                 <scope>provided</scope>
             </dependency>
-    
+            
+            <!-- REST -->
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>3.1.0.CR2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-core</artifactId>
+                <version>${version.dropwizard}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-testing</artifactId>
+                <version>${version.dropwizard}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-assets</artifactId>
+                <version>${version.dropwizard}</version>
+            </dependency>
+            
+            <!-- JSON -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${version.jackson}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${version.jackson}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${version.jackson}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.7</version>
+            </dependency>
     
             <!-- test dependencies -->
             <dependency>
@@ -125,56 +200,23 @@
                 <version>${version.jacoco}</version>
                 <scope>test</scope>
             </dependency>
-<!--
             <dependency>
                 <groupId>io.rest-assured</groupId>
                 <artifactId>rest-assured</artifactId>
                 <version>3.0.1</version>
                 <scope>test</scope>
             </dependency>
--->
-    
-    
-            <!-- JSON handling -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jdk8</artifactId>
-                <version>${jackson-version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson-version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson-version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>2.7</version>
-            </dependency>
     
             <!-- Misc -->
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jaxrs</artifactId>
-                <version>${swagger-version}</version>
+                <version>${version.swagger}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-hibernate-validations</artifactId>
-                <version>${swagger-version}</version>
+                <version>${version.swagger}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
@@ -271,7 +313,7 @@
                                     <artifactItem>
                                         <groupId>org.wildfly</groupId>
                                         <artifactId>wildfly-dist</artifactId>
-                                        <version>${wildfly.version}</version>
+                                        <version>${version.wildfly}</version>
                                         <type>zip</type>
                                         <overWrite>false</overWrite>
                                         <outputDirectory>${jbossTarget}</outputDirectory>
