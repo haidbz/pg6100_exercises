@@ -5,11 +5,10 @@
     <parent>
         <artifactId>excercises</artifactId>
         <groupId>meistad.pg6100</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>meistad.pg6100.excercises</groupId>
     <artifactId>rest_api</artifactId>
     <packaging>war</packaging>
 
@@ -17,7 +16,7 @@
         <dependency>
             <groupId>meistad.pg6100.excercises</groupId>
             <artifactId>quiz</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
     
         <dependency>

@@ -7,7 +7,7 @@
     <groupId>meistad.pg6100</groupId>
     <artifactId>excercises</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     
     <modules>
         <module>quiz</module>
@@ -217,16 +217,6 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-hibernate-validations</artifactId>
                 <version>${version.swagger}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-client</artifactId>
-                <version>3.1.0.CR2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>4.5.2</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

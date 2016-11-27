@@ -1,6 +1,5 @@
 package ejbs;
 
-import entities.Category;
 import entities.Quiz;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -11,9 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,11 +44,11 @@ public class QuizEJB {
         return entityManager.find(Quiz.class, id);
     }
     
-    public List<Quiz> getAllQuizzes(){
-        return getAllQuizzes(50);
+    public List<Quiz> getAll(){
+        return getAll(50);
     }
     
-    public List<Quiz> getAllQuizzes(int maxResults){
+    public List<Quiz> getAll(int maxResults){
         Query query = entityManager.createNamedQuery(Quiz.GET_ALL);
         query.setMaxResults(maxResults);
         return query.getResultList();
