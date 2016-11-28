@@ -20,8 +20,7 @@ public class ApplicationConfig extends Application {
         BeanConfig beanConfig = createConfiguration();
         beanConfig.setScan(true);
     
-        HashSet<Class<?>> classHashSet = provideRestApi();
-        classes = Collections.unmodifiableSet(classHashSet);
+        classes = Collections.unmodifiableSet(provideRestApi());
     }
     
     private BeanConfig createConfiguration() {
