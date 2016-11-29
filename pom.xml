@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>meistad.pg6100</groupId>
-    <artifactId>excercises</artifactId>
+    <artifactId>exercises</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     
@@ -36,7 +36,7 @@
         <dependencies>
             <!-- Internal modules used by other modules -->
             <dependency>
-                <groupId>meistad.pg6100.excercises</groupId>
+                <groupId>meistad.pg6100.exercises</groupId>
                 <artifactId>quiz</artifactId>
                 <version>${project.version}</version>
             </dependency>

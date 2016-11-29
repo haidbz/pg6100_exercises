@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class QuizEJB {
         
         return quiz.getQuizId();
     }
-    
+
     public Quiz getQuiz(long id) {
         return entityManager.find(Quiz.class, id);
     }
@@ -53,8 +54,23 @@ public class QuizEJB {
         query.setMaxResults(maxResults);
         return query.getResultList();
     }
+
+    public boolean isPresent (long id) {
+        return getQuiz(id) != null;
+    }
+
+    public boolean updateQuiz (@NotNull long id, String question, String[] answers, int correctAnswer, String category) {
+        Quiz quiz = getQuiz(id);
+        if (quiz == null)
+            return false;
+        quiz.setQuestion(question);
+        quiz.setAnswers(answers);
+        quiz.setCorrectAnswer(correctAnswer);
+        quiz.setSubSubCategory(categoryEJB.getCategory(category));
+        return true;
+    }
     
-    public void deleteQuiz(long id){
+    public void deleteQuiz (long id){
         Quiz quiz = getQuiz(id);
         entityManager.remove(quiz);
     }

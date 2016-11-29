@@ -40,19 +40,35 @@ public class QuizRestImplementation implements QuizRestAPI {
     
     @Override
     public QuizDTO getById(@ApiParam(ID_PARAM) long id) {
-        return null;
+        return QuizConverter.transform(ejb.getQuiz(id));
     }
     
     @Override
-    public void replaceById(@ApiParam(ID_PARAM) long id, QuizDTO quizDTO) {
-        
+    public void replaceById(@ApiParam(ID_PARAM) long id, QuizDTO dto) {
+        if (id != dto.id)
+            throw new WebApplicationException("May not change the id.", 409);
+
+        if (! ejb.isPresent(id))
+            throw new WebApplicationException("Cannot create new quiz with put.", 404);
+
+        try {
+            ejb.updateQuiz(id, dto.question, dto.answers, dto.correctAnswer, dto.category);
+        }
+        catch (Exception e) {
+            throw wrapException(e);
+        }
     }
-    
+
     @Override
-    public void updateById(long id, String question, String[] answers, int correctAnswer, String category) {
-        
+    public void updateById(@ApiParam(ID_PARAM) long id, @ApiParam("Json patch for quiz. Id cannot be changed.") String jsonPatch) {
+
     }
-    
+
+    @Override
+    public void deleteById(long id) {
+
+    }
+
     //----------------------------------------------------------
     
     private WebApplicationException wrapException(Exception e) throws WebApplicationException{

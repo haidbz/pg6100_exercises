@@ -130,7 +130,18 @@ public class QuizEJBTest {
         assertNotNull(list);
         assertEquals(question, list.get(0).getQuestion());
     }
-    
+
+    @Test
+    public void testUpdateQuiz() throws Exception {
+        String question = "question";
+        String newQuestion = "Another question";
+        long id = createQuiz(question);
+
+        assertTrue(quizEJB.updateQuiz(id, newQuestion, new String[]{"alpha", "beta", "gamma", "epsilon"}, 0, "Sub"));
+        assertNotEquals(question, quizEJB.getQuiz(id).getQuestion());
+        assertEquals(newQuestion, quizEJB.getQuiz(id).getQuestion());
+    }
+
     @Test
     public void testDeleteQuiz() throws Exception {
         List<Quiz> list = quizEJB.getAll();
