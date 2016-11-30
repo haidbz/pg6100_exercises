@@ -17,7 +17,12 @@
         <dependency>
             <groupId>meistad.pg6100.exercises</groupId>
             <artifactId>quiz</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>meistad.pg6100</groupId>
+            <artifactId>utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
     
         <dependency>

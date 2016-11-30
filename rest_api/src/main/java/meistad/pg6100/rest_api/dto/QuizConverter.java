@@ -14,7 +14,7 @@ public class QuizConverter {
         Objects.requireNonNull(quiz);
         
         QuizDTO quizDTO = new QuizDTO(
-                quiz.getQuizId(),
+                quiz.getId(),
                 quiz.getQuestion(),
                 quiz.getAnswers(),
                 quiz.getCorrectAnswer(),

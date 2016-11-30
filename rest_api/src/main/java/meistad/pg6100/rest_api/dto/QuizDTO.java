@@ -25,7 +25,7 @@ public class QuizDTO {
     
     public QuizDTO() {}
     
-    public QuizDTO(long id, String question, String[] answers, int correctAnswer, String category) {
+    public QuizDTO(Long id, String question, String[] answers, int correctAnswer, String category) {
         this.id = id;
         this.question = question;
         this.answers = answers;
