@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
  * Created by Håvard on 04.11.2016.
  */
 @NamedQueries({
-        @NamedQuery(name = Quiz.GET_ALL, query = "SELECT q FROM Quiz Q")
+        @NamedQuery(name = Quiz.GET_ALL, query = "SELECT q FROM Quiz q")
 })
 @Entity
 public class Quiz {
@@ -38,7 +38,7 @@ public class Quiz {
     @ParentCategories(parents = 2)
     private Category subSubCategory;
     
-    public Long getQuizId() {
+    public Long getId() {
         return quizId;
     }
     

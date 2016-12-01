@@ -38,7 +38,7 @@ public class QuizEJB {
         
         entityManager.persist(quiz);
         
-        return quiz.getQuizId();
+        return quiz.getId();
     }
 
     public Quiz getQuiz(long id) {

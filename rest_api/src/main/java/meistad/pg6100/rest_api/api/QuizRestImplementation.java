@@ -33,6 +33,7 @@ public class QuizRestImplementation implements QuizRestAPI {
             id = ejb.createQuiz(dto.question, dto.answers, dto.correctAnswer, dto.category);
         }
         catch (Exception e){
+            e.printStackTrace();
             throw wrapException(e);
         }
         return id;

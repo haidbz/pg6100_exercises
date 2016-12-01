@@ -29,7 +29,7 @@ public class QuizRestTestIT {
         // RestAssured configs shared by all the tests
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 8080;
-        RestAssured.basePath = "/newsrest/api/news";
+        RestAssured.basePath = "/rest_api/api/quiz";
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
