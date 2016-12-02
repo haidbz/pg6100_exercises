@@ -7,6 +7,9 @@ import meistad.pg6100.rest_api.dto.QuizConverter;
 import meistad.pg6100.rest_api.dto.QuizDTO;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.List;
 /**
  * Created by Håvard on 26.11.2016.
  */
+@Stateless
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class QuizRestImplementation implements QuizRestAPI {
     @EJB
     private QuizEJB ejb;
