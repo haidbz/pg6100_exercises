@@ -22,7 +22,6 @@
             <groupId>meistad.pg6100.exercises</groupId>
             <artifactId>rest_api</artifactId>
             <version>${project.version}</version>
-            <type>war</type>
         </dependency>
     </dependencies>
 
