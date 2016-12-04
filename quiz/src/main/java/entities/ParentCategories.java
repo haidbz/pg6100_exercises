@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 /**
  * Created by Håvard on 19.11.2016.
  */
-@Constraint(validatedBy = CategoriesValidator.class)
+@Constraint(validatedBy = CategoryLevelValidator.class)
 @Target({
         ElementType.FIELD,
         ElementType.METHOD,
@@ -16,9 +16,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ParentCategories {
-    String message() default "Not the expected amount of super categories.";
+    String message() default "The category is not of the expected category level.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     
-    int parents() default 0;
+    int categoryLevel() default 0;
 }

@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -22,6 +20,12 @@ import static org.junit.Assert.*;
  * Created by haidbz on 29.11.16.
  */
 public class QuizRestTestIT {
+
+    private static final String VALID_QUESTION = "A question";
+    private static final String[] VALID_ANSWERS = new String[]{"", "", "", ""};
+    private static final int VALID_CORRECT_ANSWER = 2;
+    private static final String VALID_CATEGORY = "SubSub";
+
     @BeforeClass
     public static void initClass() {
         JBossUtil.waitForJBoss(10);
@@ -64,24 +68,18 @@ public class QuizRestTestIT {
     }
 
     @Test
-    public void testCreateAndGet() throws Exception {
-        String question = "A question";
-        String[] answers = {"", "", "", ""};
-        int correctAnswer = 2;
-        String category = "SubSub";
-        QuizDTO dto = new QuizDTO(null, question, answers, correctAnswer, category);
+    public void testBadInputCreate() throws Exception {
+        QuizDTO dto = new QuizDTO(null, VALID_QUESTION, VALID_ANSWERS, VALID_CORRECT_ANSWER, VALID_CATEGORY);
         
         get().then().statusCode(200).body("size()", is(0));
 
         try {
-            Long id = Long.getLong(given()
+            given()
                     .contentType(ContentType.JSON)
                     .body(dto)
                     .post()
                     .then()
-                    .statusCode(200)
-                    .extract()
-                    .toString());
+                    .statusCode(500);
         } catch (Exception e) {
             e.printStackTrace();
             fail();

@@ -29,6 +29,8 @@ public class Category {
     @OneToMany(mappedBy = "subSubCategory")
     private List<Quiz> quizzes;
     
+    private int level;
+    
     @Override
     public boolean equals(Object o){
         if (o instanceof Category)
@@ -67,5 +69,13 @@ public class Category {
     
     public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

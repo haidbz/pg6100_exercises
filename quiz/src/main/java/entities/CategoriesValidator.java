@@ -11,7 +11,7 @@ class CategoriesValidator implements ConstraintValidator<ParentCategories, Categ
    
    @Override
    public void initialize(ParentCategories constraint) {
-      parentCategories = constraint.parents();
+      parentCategories = constraint.categoryLevel();
    }
 
    @Override

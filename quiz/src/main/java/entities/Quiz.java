@@ -35,7 +35,7 @@ public class Quiz {
     
     @ManyToOne
     @NotNull
-    @ParentCategories(parents = 2)
+    @ParentCategories(categoryLevel = 2)
     private Category subSubCategory;
     
     public Long getId() {
