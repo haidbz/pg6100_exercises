@@ -1,7 +1,23 @@
 package meistad.pg6100.rest_api.api.category.sub_sub_category;
 
+import io.swagger.annotations.ApiParam;
+import meistad.pg6100.rest_api.api.category.CategoryRestImplBase;
+import meistad.pg6100.rest_api.dto.CategoryDTO;
+import meistad.pg6100.rest_api.dto.QuizDTO;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import java.util.List;
+
 /**
  * Created by haidbz on 04.12.16.
  */
-public class SubSubCategoryRestImplementation implements SubSubCategoryRestAPI {
+@Stateless
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class SubSubCategoryRestImplementation extends CategoryRestImplBase implements SubSubCategoryRestAPI {
+    @Override
+    public CategoryDTO getParent(@ApiParam(NAME_PARAM) String name) {
+        return null;
+    }
 }

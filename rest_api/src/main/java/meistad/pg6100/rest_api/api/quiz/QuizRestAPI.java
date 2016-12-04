@@ -38,7 +38,7 @@ public interface QuizRestAPI {
 
     @ApiOperation("Get a single quiz corresponding to the given id")
     @GET
-    @Path("/id/{id}")
+    @Path(PATH_ID)
     QuizDTO getById(
             @ApiParam(ID_PARAM)
             @PathParam(ID)

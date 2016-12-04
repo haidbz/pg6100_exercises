@@ -1,7 +1,10 @@
 package meistad.pg6100.rest_api.api.category.root_category;
 
 import ejbs.CategoryEJB;
+import io.swagger.annotations.ApiParam;
+import meistad.pg6100.rest_api.api.category.CategoryRestImplBase;
 import meistad.pg6100.rest_api.dto.CategoryDTO;
+import meistad.pg6100.rest_api.dto.QuizDTO;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,42 +17,9 @@ import java.util.List;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class CategoryRestImplementation implements CategoryRestAPI {
-    @EJB
-    CategoryEJB ejb;
-
+public class CategoryRestImplementation extends CategoryRestImplBase implements CategoryRestAPI {
     @Override
-    public List<CategoryDTO> getAll() {
-        return null;
-    }
-
-    @Override
-    public void createCategory() {
-
-    }
-
-    @Override
-    public CategoryDTO getById() {
-        return null;
-    }
-
-    @Override
-    public void replace() {
-
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void delete() {
-
-    }
-
-    @Override
-    public List<CategoryDTO> getCategoriesWithQuizzes() {
+    public List<CategoryDTO> getSubCategories(@ApiParam(NAME_PARAM) String name) {
         return null;
     }
 }
