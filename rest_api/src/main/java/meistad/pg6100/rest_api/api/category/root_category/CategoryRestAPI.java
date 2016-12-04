@@ -1,4 +1,4 @@
-package meistad.pg6100.rest_api.api.category.sub_category;
+package meistad.pg6100.rest_api.api.category.root_category;
 
 import io.swagger.annotations.Api;
 import meistad.pg6100.rest_api.api.category.CategoryRestAPIBase;
@@ -13,5 +13,5 @@ import javax.ws.rs.core.MediaType;
 @Api(value = "/categories", description = "Handling of creating, retrieving and answering categories")
 @Path("/categories")
 @Produces(MediaType.APPLICATION_JSON)
-public interface SubCategoryRestAPI extends CategoryRestAPIBase {
+public interface CategoryRestAPI extends CategoryRestAPIBase {
 }

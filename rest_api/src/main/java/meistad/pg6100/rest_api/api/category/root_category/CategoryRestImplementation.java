@@ -1,13 +1,23 @@
-package meistad.pg6100.rest_api.api.category.sub_category;
+package meistad.pg6100.rest_api.api.category.root_category;
 
+import ejbs.CategoryEJB;
 import meistad.pg6100.rest_api.dto.CategoryDTO;
 
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import java.util.List;
 
 /**
  * Created by haidbz on 04.12.16.
  */
-public class SubCategoryRestImplementation implements SubCategoryRestAPI {
+@Stateless
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class CategoryRestImplementation implements CategoryRestAPI {
+    @EJB
+    CategoryEJB ejb;
+
     @Override
     public List<CategoryDTO> getAll() {
         return null;
