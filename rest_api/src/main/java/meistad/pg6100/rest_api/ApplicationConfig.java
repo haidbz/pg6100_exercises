@@ -1,6 +1,9 @@
 package meistad.pg6100.rest_api;
 
 import io.swagger.jaxrs.config.BeanConfig;
+import meistad.pg6100.rest_api.api.category.root_category.CategoryRestImplementation;
+import meistad.pg6100.rest_api.api.category.sub_category.SubCategoryRestImplementation;
+import meistad.pg6100.rest_api.api.category.sub_sub_category.SubSubCategoryRestImplementation;
 import meistad.pg6100.rest_api.api.quiz.QuizRestImplementation;
 
 import javax.ws.rs.ApplicationPath;
@@ -38,6 +41,9 @@ public class ApplicationConfig extends Application {
         
         // Which classes provide REST API
         classHashSet.add(QuizRestImplementation.class);
+        classHashSet.add(CategoryRestImplementation.class);
+        classHashSet.add(SubCategoryRestImplementation.class);
+        classHashSet.add(SubSubCategoryRestImplementation.class);
         
         // further configuration to activate SWAGGER
         classHashSet.add(io.swagger.jaxrs.listing.ApiListingResource.class);
