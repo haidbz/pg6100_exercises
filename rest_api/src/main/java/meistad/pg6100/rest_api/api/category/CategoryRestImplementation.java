@@ -1,4 +1,4 @@
-package meistad.pg6100.rest_api.api;
+package meistad.pg6100.rest_api.api.category;
 
 import ejbs.CategoryEJB;
 

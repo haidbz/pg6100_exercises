@@ -1,7 +1,8 @@
-package meistad.pg6100.rest_api.api;
+package meistad.pg6100.rest_api.api.quiz;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import meistad.pg6100.rest_api.api.quiz.QuizRestAPI;
 import meistad.pg6100.rest_api.dto.QuizDTO;
 import meistad.pg6100.utils.JBossUtil;
 import org.junit.After;

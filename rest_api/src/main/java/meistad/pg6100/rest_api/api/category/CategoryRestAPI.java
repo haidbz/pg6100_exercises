@@ -1,4 +1,4 @@
-package meistad.pg6100.rest_api.api;
+package meistad.pg6100.rest_api.api.category;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,11 +13,23 @@ import java.util.List;
 /**
  * Created by haidbz on 04.12.16.
  */
-@Api(value = "/category", description = "Handling of creating, retrieving and answering categories")
-@Path("/category")
+@Api(value = "/categories", description = "Handling of creating, retrieving and answering categories")
+@Path("/categories")
 @Produces(MediaType.APPLICATION_JSON)
 public interface CategoryRestAPI {
     @ApiOperation("Get every category")
     @GET
     List<CategoryDTO> getAll();
+    
+    void createCategory();
+    
+    CategoryDTO getById();
+    
+    void replace();
+
+    void update();
+    
+    void delete();
+    
+    List<CategoryDTO> getCategoriesWithQuizzes();
 }

@@ -1,7 +1,7 @@
 package meistad.pg6100.rest_api;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import meistad.pg6100.rest_api.api.QuizRestImplementation;
+import meistad.pg6100.rest_api.api.quiz.QuizRestImplementation;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

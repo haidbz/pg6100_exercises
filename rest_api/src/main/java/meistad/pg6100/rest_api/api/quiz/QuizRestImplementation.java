@@ -1,4 +1,4 @@
-package meistad.pg6100.rest_api.api;
+package meistad.pg6100.rest_api.api.quiz;
 
 import com.google.common.base.Throwables;
 import ejbs.QuizEJB;

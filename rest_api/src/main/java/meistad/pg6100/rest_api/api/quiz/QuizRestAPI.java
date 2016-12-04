@@ -1,4 +1,4 @@
-package meistad.pg6100.rest_api.api;
+package meistad.pg6100.rest_api.api.quiz;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
