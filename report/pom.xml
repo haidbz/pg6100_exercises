@@ -16,12 +16,10 @@
         <dependency>
             <groupId>meistad.pg6100.exercises</groupId>
             <artifactId>quiz</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>meistad.pg6100.exercises</groupId>
             <artifactId>rest_api</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

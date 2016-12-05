@@ -26,7 +26,7 @@ public class CategoryEJB {
     
     public boolean createCategory(@NotBlank String name, String parent){
         // If category exists or the given parent category does not, return false
-        if (!categoryIsNull(name) || (parent != null && categoryIsNull(parent)))
+        if (isPresent(name) || (parent != null && !isPresent(parent)))
             return false;
     
         Category category = new Category();
@@ -76,6 +76,11 @@ public class CategoryEJB {
         deleteSingleCategory(name);
     }
 
+    public boolean isPresent(String name) {
+        Category category = getCategory(name);
+        return category != null;
+    }
+
     private int setCategoryLevel(Category category) {
         return setCategoryLevel(category, 0);
     }
@@ -85,11 +90,6 @@ public class CategoryEJB {
             return level;
         else
             return setCategoryLevel(category.getParentCategory(), level + 1);
-    }
-
-    private boolean categoryIsNull(String name) {
-        Category category = getCategory(name);
-        return category == null;
     }
 
     private void deleteCategory(String name, boolean recursive) {

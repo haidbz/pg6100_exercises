@@ -21,15 +21,15 @@ public interface CategoryRestAPIBase {
     String ID_REFERENCE = "/{" + ID +"}";
     String ID_PATH = "/" + ID + ID_REFERENCE;
 
-    @ApiOperation("Get every quiz")
+    @ApiOperation("Get every quiz.")
     @GET
     List<CategoryDTO> getAll();
 
-    @ApiOperation("TODO documentation")
+    @ApiOperation("Create a category with the given name and parent. Any other field will be ignored.")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiResponse(code = 200, message = "Id of the new category")
-    void createCategory(QuizDTO dto);
+    void createCategory(CategoryDTO dto);
 
     @ApiOperation("TODO documentation")
     @GET

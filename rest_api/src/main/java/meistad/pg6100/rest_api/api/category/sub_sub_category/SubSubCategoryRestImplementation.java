@@ -17,6 +17,11 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class SubSubCategoryRestImplementation extends CategoryRestImplBase implements SubSubCategoryRestAPI {
     @Override
+    public List<CategoryDTO> getAll() {
+        return null;
+    }
+
+    @Override
     public CategoryDTO getParent(@ApiParam(NAME_PARAM) String name) {
         return null;
     }

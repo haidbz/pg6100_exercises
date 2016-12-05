@@ -1,6 +1,7 @@
 package meistad.pg6100.rest_api.api.category.root_category;
 
 import ejbs.CategoryEJB;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import meistad.pg6100.rest_api.api.category.CategoryRestImplBase;
 import meistad.pg6100.rest_api.dto.CategoryDTO;
@@ -18,6 +19,18 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class CategoryRestImplementation extends CategoryRestImplBase implements CategoryRestAPI {
+    @Override
+    public List<CategoryDTO> getAll() {
+        return null;
+    }
+
+    @ApiOperation("Create a new root category. Will ignore all but the name field.")
+    @Override
+    public void createCategory(CategoryDTO dto) {
+        dto.parent = null;
+        super.createCategory(dto);
+    }
+
     @Override
     public List<CategoryDTO> getSubCategories(@ApiParam(NAME_PARAM) String name) {
         return null;
