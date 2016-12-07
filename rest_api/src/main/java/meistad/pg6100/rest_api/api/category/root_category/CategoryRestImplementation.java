@@ -4,6 +4,7 @@ import ejbs.CategoryEJB;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import meistad.pg6100.rest_api.api.category.CategoryRestImplBase;
+import meistad.pg6100.rest_api.dto.CategoryConverter;
 import meistad.pg6100.rest_api.dto.CategoryDTO;
 import meistad.pg6100.rest_api.dto.QuizDTO;
 
@@ -19,9 +20,10 @@ import java.util.List;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class CategoryRestImplementation extends CategoryRestImplBase implements CategoryRestAPI {
+    @ApiOperation("Get all categories")
     @Override
     public List<CategoryDTO> getAll() {
-        return null;
+        return CategoryConverter.transform(ejb.getAllCategories(100));
     }
 
     @ApiOperation("Create a new root category. Will ignore all but the name field.")
