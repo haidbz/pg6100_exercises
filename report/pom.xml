@@ -20,6 +20,7 @@
         <dependency>
             <groupId>meistad.pg6100.exercises</groupId>
             <artifactId>rest_api</artifactId>
+            <type>war</type>
         </dependency>
     </dependencies>
 
