@@ -39,7 +39,11 @@ public abstract class CategoryRestImplBase implements CategoryRestAPIBase {
 
     @Override
     public void replaceById(String name, CategoryDTO dto) {
-
+        if (!ejb.isPresent(name))
+            throw new WebApplicationException("That category doesn't exist.", 404);
+        if (!name.equals(dto.name))
+            throw new WebApplicationException("The names given do not match.", 400);
+        
     }
 
     @Override
@@ -49,7 +53,7 @@ public abstract class CategoryRestImplBase implements CategoryRestAPIBase {
 
     @Override
     public void deleteById(String name) {
-
+        ejb.deleteRecursivelyCategory(name);
     }
 
     @Override

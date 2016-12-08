@@ -21,7 +21,7 @@ public interface QuizRestAPI {
     String ID_PARAM = "The id of the quiz.";
 
     String ID = "id";
-    String PATH_ID = "/" + ID + "/{" + ID + "}";
+    String ID_PATH = "/" + ID + "/{" + ID + "}";
 
     @ApiOperation("Get every quiz")
     @GET
@@ -38,7 +38,7 @@ public interface QuizRestAPI {
 
     @ApiOperation("Get a single quiz corresponding to the given id")
     @GET
-    @Path(PATH_ID)
+    @Path(ID_PATH)
     QuizDTO getById(
             @ApiParam(ID_PARAM)
             @PathParam(ID)
@@ -47,7 +47,7 @@ public interface QuizRestAPI {
 
     @ApiOperation("Replace a quiz with another with the same id")
     @PUT
-    @Path(PATH_ID)
+    @Path(ID_PATH)
     @Consumes(MediaType.APPLICATION_JSON)
     void replaceById(
             @ApiParam(ID_PARAM)
@@ -59,7 +59,7 @@ public interface QuizRestAPI {
 
     @ApiOperation("Update an existing quiz")
     @PATCH
-    @Path(PATH_ID)
+    @Path(ID_PATH)
     @Consumes("application/merge-patch+json")
     void updateById (
             @ApiParam(ID_PARAM)
@@ -71,7 +71,7 @@ public interface QuizRestAPI {
 
     @ApiOperation("Delete a quiz")
     @DELETE
-    @Path(PATH_ID)
+    @Path(ID_PATH)
     void deleteById (
             long id
     );

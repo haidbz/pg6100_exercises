@@ -28,7 +28,6 @@ public interface CategoryRestAPIBase {
     @ApiOperation("Create a category with the given name and parent. Any other field will be ignored.")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiResponse(code = 200, message = "Id of the new category")
     void createCategory(CategoryDTO dto);
 
     @ApiOperation("TODO documentation")
