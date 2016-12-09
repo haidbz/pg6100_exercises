@@ -73,4 +73,12 @@ public class Quiz {
     public void setSubSubCategory(Category subSubCategory) {
         this.subSubCategory = subSubCategory;
     }
+
+    public Long getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(Long quizId) {
+        this.quizId = quizId;
+    }
 }

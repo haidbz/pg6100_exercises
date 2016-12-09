@@ -51,8 +51,8 @@ public class CategoryEJBTest {
     @Test
     public void testCreateParentCategory() throws Exception {
         String name = "Arbitrary_category";
-        assertTrue(categoryEJB.createCategory(name));
-        assertFalse(categoryEJB.createCategory(name));
+        assertTrue(categoryEJB.create(name));
+        assertFalse(categoryEJB.create(name));
     }
     
     @Test
@@ -60,81 +60,81 @@ public class CategoryEJBTest {
         String root = "Root";
         String sub1 = "Sub_1";
         
-        categoryEJB.createCategory(root);
-        assertTrue(categoryEJB.createCategory(sub1, root));
-        assertTrue(categoryEJB.createCategory(sub1 + "_1", sub1));
-        assertTrue(categoryEJB.createCategory(sub1 + "_2", sub1));
+        categoryEJB.create(root);
+        assertTrue(categoryEJB.create(sub1, root));
+        assertTrue(categoryEJB.create(sub1 + "_1", sub1));
+        assertTrue(categoryEJB.create(sub1 + "_2", sub1));
     
-        assertFalse(categoryEJB.createCategory(sub1 + "_2", sub1));
-        assertFalse(categoryEJB.createCategory("Sub_2", root + "_2"));
+        assertFalse(categoryEJB.create(sub1 + "_2", sub1));
+        assertFalse(categoryEJB.create("Sub_2", root + "_2"));
     }
     
     @Test
     public void testGetCategory() throws Exception {
         String monthyPython = "Monthy Python";
-        categoryEJB.createCategory(monthyPython);
-        assertEquals(monthyPython, categoryEJB.getCategory(monthyPython).getName());
+        categoryEJB.create(monthyPython);
+        assertEquals(monthyPython, categoryEJB.get(monthyPython).getName());
         
         String holyGrail = "Holy Grail";
-        categoryEJB.createCategory(holyGrail, monthyPython);
-        assertEquals(holyGrail, categoryEJB.getCategory(holyGrail).getName());
-        assertEquals(monthyPython, categoryEJB.getCategory(holyGrail).getParentCategory().getName());
+        categoryEJB.create(holyGrail, monthyPython);
+        assertEquals(holyGrail, categoryEJB.get(holyGrail).getName());
+        assertEquals(monthyPython, categoryEJB.get(holyGrail).getParentCategory().getName());
     
-        assertEquals(1, categoryEJB.getCategory(monthyPython).getChildCategories().size());
-        assertEquals(holyGrail, categoryEJB.getCategory(monthyPython).getChildCategories().get(0).getName());
+        assertEquals(1, categoryEJB.get(monthyPython).getChildCategories().size());
+        assertEquals(holyGrail, categoryEJB.get(monthyPython).getChildCategories().get(0).getName());
     }
     
     @Test
     public void testBadInput() throws Exception {
         try {
-            categoryEJB.createCategory("    ");
+            categoryEJB.create("    ");
             fail();
         }
         catch (EJBException e){e.printStackTrace();}
-        assertFalse(categoryEJB.createCategory("Bad_sub", "Null"));
+        assertFalse(categoryEJB.create("Bad_sub", "Null"));
     }
     
     @Test
     public void testDeleteSingleCategory() throws Exception {
         String root = "root";
-        categoryEJB.createCategory(root);
+        categoryEJB.create(root);
     
         List<String> exampleSubNames = checkGeneratedCategories(root);
     
-        assertEquals(exampleSubNames.get(0), categoryEJB.getCategory(exampleSubNames.get(0)).getName());
-        categoryEJB.deleteSingleCategory(exampleSubNames.get(0));
-        assertNull(categoryEJB.getCategory(exampleSubNames.get(0)));
-        assertNotNull(categoryEJB.getCategory(exampleSubNames.get(2)));
-        assertNotNull(categoryEJB.getCategory(root));
+        assertEquals(exampleSubNames.get(0), categoryEJB.get(exampleSubNames.get(0)).getName());
+        categoryEJB.deleteSingle(exampleSubNames.get(0));
+        assertNull(categoryEJB.get(exampleSubNames.get(0)));
+        assertNotNull(categoryEJB.get(exampleSubNames.get(2)));
+        assertNotNull(categoryEJB.get(root));
     }
     
     @Test
     public void testDeleteRecursively() throws Exception {
         String root = "root";
-        categoryEJB.createCategory(root);
+        categoryEJB.create(root);
         checkGeneratedCategories(root);
     
-        List<Category> subsOfRoot = categoryEJB.getCategory(root).getChildCategories();
-        categoryEJB.deleteRecursivelyCategory(root);
-        List<Category> allCategories = categoryEJB.getAllCategories();
+        List<Category> subsOfRoot = categoryEJB.get(root).getChildCategories();
+        categoryEJB.deleteRecursively(root);
+        List<Category> allCategories = categoryEJB.getAll();
         subsOfRoot.forEach(sub -> assertFalse(allCategories.contains(sub)));
     }
     
     @Test
     public void testDeleteAndMoveChildren() throws Exception {
         String root = "root";
-        categoryEJB.createCategory(root);
+        categoryEJB.create(root);
     
         List<String> exampleSubNames = checkGeneratedCategories(root);
         
-        Category deleted = categoryEJB.getCategory(exampleSubNames.get(0));
-        Category newParent = categoryEJB.getCategory(exampleSubNames.get(1));
+        Category deleted = categoryEJB.get(exampleSubNames.get(0));
+        Category newParent = categoryEJB.get(exampleSubNames.get(1));
         List<Category> childCategories = deleted.getChildCategories();
         
-        categoryEJB.deleteCategoryMoveChildren(deleted.getName(), newParent.getName());
+        categoryEJB.deleteMoveChildren(deleted.getName(), newParent.getName());
     
-        deleted = categoryEJB.getCategory(exampleSubNames.get(0));
-        Category finalNewParent = categoryEJB.getCategory(exampleSubNames.get(1));
+        deleted = categoryEJB.get(exampleSubNames.get(0));
+        Category finalNewParent = categoryEJB.get(exampleSubNames.get(1));
         
         assertNull(deleted);
         assertTrue(finalNewParent.getChildCategories().containsAll(childCategories));
@@ -143,7 +143,7 @@ public class CategoryEJBTest {
     private List<String> checkGeneratedCategories(String root) {
         generateDummySubCategories(root, 3, 3);
         List<String> exampleSubNames = Arrays.asList("sub_0", "sub_2", "sub_0_2", "sub_2_0", "sub_0_2_0", "sub_2_0_2");
-        exampleSubNames.forEach(name -> assertNotNull(categoryEJB.getCategory(name)));
+        exampleSubNames.forEach(name -> assertNotNull(categoryEJB.get(name)));
         return exampleSubNames;
     }
     
@@ -166,7 +166,7 @@ public class CategoryEJBTest {
     private void createDummySub(String root, int categoriesPerLevel, int levels, String sub, int i) {
         StringBuilder builder = new StringBuilder(sub);
         builder.append("_").append(i);
-        categoryEJB.createCategory(builder.toString(), root);
+        categoryEJB.create(builder.toString(), root);
         
         if (levels > 0) 
             generateDummySubCategories(builder.toString(), categoriesPerLevel, levels - 1);

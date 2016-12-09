@@ -56,9 +56,9 @@ public class QuizEJBTest {
     }
     
     private void createSubSubCategory(){
-        categoryEJB.createCategory("Dom");
-        categoryEJB.createCategory("Switch", "Dom");
-        categoryEJB.createCategory("Sub", "Switch");
+        categoryEJB.create("Dom");
+        categoryEJB.create("Switch", "Dom");
+        categoryEJB.create("Sub", "Switch");
     }
     
     @Test

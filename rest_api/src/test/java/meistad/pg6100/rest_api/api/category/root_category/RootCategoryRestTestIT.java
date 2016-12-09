@@ -42,12 +42,8 @@ public class RootCategoryRestTestIT extends RestTestBase {
         get().then()
                 .statusCode(200)
                 .body("size()", is(0));
-        
-        given().contentType(ContentType.JSON)
-                .body(dto)
-                .post()
-                .then()
-                .statusCode(204);
+
+        postDummy(dto);
 
         get().then()
                 .statusCode(200)
@@ -60,27 +56,33 @@ public class RootCategoryRestTestIT extends RestTestBase {
                 .body("name", is(VALID_ROOT_CATEGORY));
     }
 
-/*
     @Test
-    public void testBadInputCreate() throws Exception {
-        QuizDTO dto = createDummyQuizDTO();
-    
-        get().then().statusCode(200).body("size()", is(0));
+    public void testReplaceRoot() throws Exception {
+        CategoryDTO dto = createDummySubSubCategoryDTO();
+        postDummy(dto);
 
-        try {
-            given()
-                    .contentType(ContentType.JSON)
-                    .body(dto)
-                    .post()
-                    .then()
-                    .statusCode(500);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-        
-        
+        String replacement = "Replacement";
+        dto.name = replacement;
+        given().contentType(ContentType.JSON)
+                .pathParam(CategoryRestAPI.ID, VALID_SUB_SUB_CATEGORY)
+                .body(dto)
+                .put(CategoryRestAPI.ID_PATH)
+                .then()
+                .statusCode(204);
+
+        given().pathParam(CategoryRestAPI.ID, replacement)
+                .get(CategoryRestAPI.ID_PATH)
+                .then()
+                .statusCode(200)
+                .body("name", is(dto.name));
     }
-*/
+
+    private void postDummy(CategoryDTO dto) {
+        given().contentType(ContentType.JSON)
+                .body(dto)
+                .post()
+                .then()
+                .statusCode(204);
+    }
 
 }

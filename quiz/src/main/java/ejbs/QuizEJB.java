@@ -34,7 +34,7 @@ public class QuizEJB {
         quiz.setQuestion(question);
         quiz.setAnswers(answers);
         quiz.setCorrectAnswer(correctAnswer);
-        quiz.setSubSubCategory(categoryEJB.getCategory(category));
+        quiz.setSubSubCategory(categoryEJB.get(category));
         
         entityManager.persist(quiz);
         
@@ -66,7 +66,7 @@ public class QuizEJB {
         quiz.setQuestion(question);
         quiz.setAnswers(answers);
         quiz.setCorrectAnswer(correctAnswer);
-        quiz.setSubSubCategory(categoryEJB.getCategory(category));
+        quiz.setSubSubCategory(categoryEJB.get(category));
         return true;
     }
     

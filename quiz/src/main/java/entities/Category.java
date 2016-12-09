@@ -47,7 +47,7 @@ public class Category {
     
     public List<Quiz> getQuizzes() {
         if (quizzes == null)
-            quizzes = new ArrayList<>();
+            setQuizzes(new ArrayList<>());
         return quizzes;
     }
     
@@ -77,5 +77,9 @@ public class Category {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
     }
 }
